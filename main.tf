@@ -1,5 +1,5 @@
-# We strongly recommend using the required_providers block to set the
-# Azure Provider source and version being used
+//---------- PROVIDER ----------
+
 terraform {
   required_providers {
     azurerm = {
@@ -9,7 +9,6 @@ terraform {
   }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
 
@@ -17,11 +16,11 @@ provider "azurerm" {
 }
 
 
+//---------- DATA ----------
+
 data "azurerm_resource_group" "example" {
   name = "devops-TP2"
 }
-
-
 
 data "azurerm_virtual_network" "main" {
   resource_group_name = data.azurerm_resource_group.example.name
@@ -34,6 +33,9 @@ data "azurerm_subnet" "internal" {
   resource_group_name  = data.azurerm_resource_group.example.name
   virtual_network_name = data.azurerm_virtual_network.main.name
 }
+
+
+//---------- RESOURCES ----------
 
 resource "azurerm_public_ip" "example" {
   name                = "devops-public-IP-20180676"
@@ -91,6 +93,8 @@ resource "azurerm_linux_virtual_machine" "example" {
     version   = "latest"
   }
 }
+
+//---------- OUTPUT ----------
 
 output "private_key" {
   value     = tls_private_key.ssh.private_key_pem
